@@ -6,6 +6,7 @@ The official source is Apple's Human Interface Guidelines: https://developer.app
 
 - [Apple HIG specifications (October 2026)](#apple-hig-specifications-october-2026)
 - [iPhone Duo](#iphone-duo)
+- [Measure it yourself](#measure-it-yourself)
 - [Measured sizes (iOS 15 / iPadOS 15, 2021)](#measured-sizes-ios-15--ipados-15-2021)
 
 <hr/>
@@ -108,6 +109,20 @@ struct Provider: TimelineProvider {
     // ...
 }
 ```
+
+## Measure it yourself
+
+The [`WidgetSizeProbe`](WidgetSizeProbe) project contains a widget that shows its own size in points. It supports all widget families. The iPhone Duo sizes above were measured with it.
+
+1. Open `WidgetSizeProbe/WidgetSizeProbe.xcodeproj` and run the `ProbeApp` scheme on a simulator or a device. To run on a device, set your own team and bundle identifier. Do not commit them.
+2. Add the Size Probe widget to the Home Screen or the Lock Screen. Each widget shows its family and its `displaySize`.
+3. Optional: stream all the sizes from a simulator:
+
+```sh
+xcrun simctl spawn booted log stream --style compact --predicate 'eventMessage CONTAINS "PROBE"'
+```
+
+The project is generated with [XcodeGen](https://github.com/yonaskolb/XcodeGen) from `project.yml`. Run `xcodegen generate` after you change `project.yml`.
 
 ## Measured sizes (iOS 15 / iPadOS 15, 2021)
 
