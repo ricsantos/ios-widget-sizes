@@ -29,7 +29,7 @@ Values copied from the HIG [Specifications](https://developer.apple.com/design/h
 |360x780|iPhone 12 mini, 13 mini|155x155|329x155|329x345|72x72|157x72|225x26|
 |320x568|iPhone SE (1st generation), iPod touch (7th generation)|141x141|292x141|292x311|N/A|N/A|N/A|
 
-The HIG does not list newer screen sizes yet, for example iPhone 16 Pro (402x874), iPhone 16 Pro Max (440x956) or iPhone Duo.
+The HIG does not list newer screen sizes yet, for example iPhone 16 Pro (402x874), iPhone 16 Pro Max (440x956) or [iPhone Duo](#iphone-duo).
 
 ### iPadOS
 
@@ -85,24 +85,27 @@ In iPadOS, the system renders a widget at the larger "Canvas" size and then scal
 
 ## iPhone Duo
 
-The HIG does not list widget sizes for iPhone Duo yet. Pull requests with measured sizes are welcome.
+The HIG does not list widget sizes for iPhone Duo yet. The sizes below were measured in the iPhone Duo simulator (Xcode 27.1, iOS 27.1, October 2026) with `TimelineProviderContext.displaySize`. Pull requests with sizes measured on a real device are welcome.
 
-|Display|Screen size (pt)|Small|Medium|Large|Circular|Rectangular|Inline|
-|-|-|-|-|-|-|-|-|
-|Outer display|466 x 678|?|?|?|?|?|?|
-|Inner display (open)|?|?|?|?|?|?|?|
+|Display|Screen size (pt)|Small (pt)|Medium (pt)|Large (pt)|Extra large portrait (pt)|Circular (pt)|Rectangular (pt)|Inline (pt)|
+|-|-|-|-|-|-|-|-|-|
+|Outer display|466 x 678|158 x 158|334 x 158|334 x 354|?|59.67 x 59.67|143 x 59.67|310 x 36|
+|Inner display (open)|669 x 951 (951 x 669 landscape)|158 x 158|334 x 158|334 x 354|334 x 550|?|?|?|
 
-The outer display size comes from Apple's iPhone Duo design templates, not from the widgets HIG. The Xcode 27.1 simulator cannot run widget extensions for iPhone Duo, so measure on a device. A simple way to measure is to show the size from a `GeometryReader` in the widget view:
+- The screen sizes come from the iPhone Duo simulator profile: 1398 x 2034 px (outer) and 2007 x 2853 px (inner), both @3x. The inner panel is 1878 x 2670 px, so the system renders the inner display at 3x and scales it down. Some sources divide the panel pixels by 3 and get 626 x 890 pt. That value is not correct.
+- `systemExtraLargePortrait` is new in iOS 27. It is a 4 x 6 grid widget for the iPhone Home Screen.
+- The inner display was measured in landscape, the default pose of the simulator when open.
+- `?` means not measured yet.
+
+To measure, read `context.displaySize` in your `TimelineProvider`. A `GeometryReader` in the widget view gives smaller values in the widget gallery, because the gallery scales its previews down.
 
 ```swift
-struct SizeWidgetView: View {
-    var body: some View {
-        GeometryReader { proxy in
-            Text("\(Int(proxy.size.width)) x \(Int(proxy.size.height))")
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-        }
-        .containerBackground(.fill.tertiary, for: .widget)
+struct Provider: TimelineProvider {
+    func getSnapshot(in context: Context, completion: @escaping (Entry) -> Void) {
+        print("\(context.family): \(context.displaySize)")
+        completion(Entry(date: .now))
     }
+    // ...
 }
 ```
 
