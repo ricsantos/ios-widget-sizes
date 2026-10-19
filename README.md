@@ -90,12 +90,12 @@ The HIG does not list widget sizes for iPhone Duo yet. The sizes below were meas
 |Display|Screen size (pt)|Small (pt)|Medium (pt)|Large (pt)|Extra large portrait (pt)|Circular (pt)|Rectangular (pt)|Inline (pt)|
 |-|-|-|-|-|-|-|-|-|
 |Outer display|466 x 678|158 x 158|334 x 158|334 x 354|334 x 550|59.67 x 59.67|143 x 59.67|310 x 36|
-|Inner display (open)|669 x 951 (951 x 669 landscape)|158 x 158|334 x 158|334 x 354|334 x 550|59.67 x 59.67|143 x 59.67|?|
+|Inner display (open)|669 x 951 (951 x 669 landscape)|158 x 158|334 x 158|334 x 354|334 x 550|59.67 x 59.67|143 x 59.67|310 x 36|
 
 - The screen sizes come from the iPhone Duo simulator profile: 1398 x 2034 px (outer) and 2007 x 2853 px (inner), both @3x. The inner panel is 1878 x 2670 px, so the system renders the inner display at 3x and scales it down. Some sources divide the panel pixels by 3 and get 626 x 890 pt. That value is not correct.
 - `systemExtraLargePortrait` is new in iOS 27. It is a 4 x 6 grid widget for the iPhone Home Screen.
 - The inner display was measured in landscape, the default pose of the simulator when open.
-- `?` means not measured yet.
+- The Lock Screen editor previews an inline widget at 262 x 26 pt. The placed inline widget is 310 x 36 pt.
 
 To measure, read `context.displaySize` in your `TimelineProvider`. A `GeometryReader` in the widget view gives smaller values in the widget gallery, because the gallery scales its previews down.
 
